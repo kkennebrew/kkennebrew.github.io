@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kalah Kennebrew · Data Analyst Portfolio</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <style>
+    /* ================================================================
+       COLOUR PALETTE — all combinations WCAG AA compliant
+       White on --hero-start (#c4501a) = 4.65:1  ✓
+       White on --hero-end   (#7a2500) = 9.80:1  ✓
+       --ink     on white             = 12.6:1   ✓
+       --ink     on --cream           = 11.5:1   ✓
+       --amber   on white             =  8.1:1   ✓
+       --amber   on --cream           =  7.5:1   ✓
+
+       CHANGE: edit hex values here to retheme the whole site.
+    ================================================================ */
+    :root {
+      --hero-start:  #c4501a;   /* burnt terracotta  */
+      --hero-mid:    #a03c10;   /* deep orange       */
+      --hero-end:    #7a2500;   /* dark amber        */
+      --amber:       #8c3300;   /* accessible orange on light bg */
+      --amber-light: #c4501a;   /* for hover states  */
+      --cream:       #fff8f2;   /* warm section bg   */
+      --peach:       #ffeedd;   /* borders, chips bg */
+      --peach-dark:  #ffd4a8;   /* stronger borders  */
+      --ink:         #1f0e00;   /* primary text      */
+      --ink-mid:     #5c3515;   /* secondary text    */
+      --ink-light:   #7a5030;   /* muted text        */
+      --sidebar-bg:  #180a00;   /* deep warm dark    */
+      --white:       #ffffff;
+      --card-shadow: 0 2px 18px rgba(140,51,0,0.09);
+      --sidebar-w:   270px;
+      --header-h:    64px;
+      --font-sans:   'Source Sans 3', sans-serif;
+      --font-serif:  'Source Serif 4', serif;
+      --radius:      14px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      font-size: 16px; line-height: 1.8;
+      color: var(--ink);
+      background: var(--white);
+      margin-left: var(--sidebar-w);
+    }
+    a { color: var(--amber); text-decoration: none; }
+    a:hover { color: var(--amber-light); }
+    img { display: block; max-width: 100%; }
+    h1, h2, h3 { font-family: var(--font-serif); line-height: 1.25; }
+
+    /* ================================================================
+       FIXED SIDEBAR
+    ================================================================ */
+    #sidebar {
+      position: fixed; top: 0; left: 0;
+      width: var(--sidebar-w); height: 100vh;
+      background: var(--sidebar-bg);
+      display: flex; flex-direction: column;
+      padding: 2.5rem 1.75rem;
+      overflow-y: auto; z-index: 200;
+    }
+    #sidebar .brand { margin-bottom: 0.25rem; }
+    #sidebar .brand h1 {
+      font-family: var(--font-serif); font-size: 1.3rem;
+      color: var(--white); font-weight: 600; margin-bottom: 0.15rem;
+    }
+    #sidebar .brand p { font-size: 0.77rem; color: #b08060; font-style: italic; }
+
+    #sidebar hr { border: none; border-top: 1px solid rgba(255,255,255,0.06); margin: 1.5rem 0; }
+
+    #sidebar nav ul { list-style: none; }
+    #sidebar nav ul li { margin-bottom: 0.15rem; }
+    #sidebar nav ul li a {
+      display: flex; align-items: center; gap: 0.7rem;
+      padding: 0.55rem 0.7rem; border-radius: 8px;
+      color: #c8a882; font-size: 0.88rem; font-weight: 600;
+      transition: background 0.2s, color 0.2s;
+    }
+    #sidebar nav ul li a i { width: 16px; text-align: center; color: #7a5030; transition: color 0.2s; }
+    #sidebar nav ul li a:hover,
+    #sidebar nav ul li a.active { background: rgba(196,80,26,0.18); color: var(--white); }
+    #sidebar nav ul li a:hover i,
+    #sidebar nav ul li a.active i { color: var(--peach-dark); }
+
+    #sidebar .sidebar-social { margin-top: auto; padding-top: 1.5rem; }
+    #sidebar .sidebar-social p {
+      font-size: 0.67rem; text-transform: uppercase; letter-spacing: 0.12em;
+      color: #7a5030; margin-bottom: 0.7rem;
+    }
+    #sidebar .sidebar-social .icons { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    #sidebar .sidebar-social .icons a {
+      display: flex; align-items: center; justify-content: center;
+      width: 34px; height: 34px; border-radius: 50%;
+      border: 1px solid rgba(196,80,26,0.3);
+      color: #b08060; font-size: 0.78rem;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+    #sidebar .sidebar-social .icons a:hover {
+      background: var(--hero-start); border-color: var(--hero-start); color: var(--white);
+    }
+
+    /* ================================================================
+       HEADER
+    ================================================================ */
+    #header {
+      position: sticky; top: 0; z-index: 100;
+      height: var(--header-h);
+      background: var(--white);
+      border-bottom: 2px solid var(--peach);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2.5rem;
+      box-shadow: 0 2px 16px rgba(140,51,0,0.06);
+    }
+    #header .logo { font-family: var(--font-serif); font-size: 1.1rem; color: var(--ink); }
+    #header .logo span { color: var(--amber); font-style: italic; }
+
+    #header .header-social { display: flex; gap: 0.45rem; }
+    #header .header-social a {
+      display: flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--cream); color: var(--amber); font-size: 0.78rem;
+      border: 1px solid var(--peach);
+      transition: background 0.2s, color 0.2s;
+    }
+    #header .header-social a:hover { background: var(--hero-start); color: var(--white); border-color: var(--hero-start); }
+
+    #menu-toggle {
+      display: none; align-items: center; justify-content: center;
+      width: 38px; height: 38px; border: none;
+      background: var(--cream); border-radius: 8px;
+      cursor: pointer; color: var(--amber); font-size: 1rem;
+      border: 1px solid var(--peach);
+    }
+
+    /* ================================================================
+       SHARED
+    ================================================================ */
+    section { padding: 5.5rem 3.5rem; }
+
+    .section-label {
+      display: inline-block; font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.13em; text-transform: uppercase;
+      color: var(--amber); margin-bottom: 0.45rem;
+      font-style: italic;
+    }
+    .section-title { font-size: 2rem; color: var(--ink); margin-bottom: 0.8rem; }
+    .section-divider {
+      width: 48px; height: 2px;
+      background: linear-gradient(90deg, var(--hero-start), var(--peach-dark));
+      border-radius: 2px; margin-bottom: 2.75rem;
+    }
+
+    /* ================================================================
+       BUTTONS
+    ================================================================ */
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.72rem 1.65rem; border-radius: 50px;
+      font-family: var(--font-sans); font-size: 0.87rem;
+      font-weight: 700; letter-spacing: 0.02em;
+      cursor: pointer; transition: all 0.22s; text-decoration: none;
+    }
+    /* On orange hero bg */
+    .btn-white {
+      background: var(--white); color: var(--amber);
+      border: 2px solid var(--white);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    }
+    .btn-white:hover { background: var(--peach); border-color: var(--peach); color: var(--amber); }
+    .btn-ghost {
+      background: rgba(255,255,255,0.12); color: var(--white);
+      border: 2px solid rgba(255,255,255,0.5);
+      backdrop-filter: blur(4px);
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,0.22); border-color: var(--white); color: var(--white); }
+    /* On light bg */
+    .btn-primary { background: var(--hero-start); color: var(--white); border: 2px solid var(--hero-start); }
+    .btn-primary:hover { background: var(--hero-mid); border-color: var(--hero-mid); color: var(--white); }
+    .btn-outline { background: transparent; color: var(--amber); border: 2px solid var(--hero-start); border-radius: 50px; }
+    .btn-outline:hover { background: var(--hero-start); color: var(--white); }
+
+    /* ================================================================
+       HERO — deep burnt-orange gradient, all white text passes WCAG AA
+       Lightest point #c4501a = 4.65:1 contrast with white ✓
+    ================================================================ */
+    #banner {
+      display: flex; align-items: center; gap: 4.5rem;
+      padding: 6rem 3.5rem;
+      background: linear-gradient(140deg, var(--hero-start) 0%, var(--hero-mid) 55%, var(--hero-end) 100%);
+      min-height: calc(100vh - var(--header-h));
+      position: relative; overflow: hidden;
+    }
+
+    /* Decorative soft circles — purely visual, no content */
+    #banner::before {
+      content: ''; position: absolute;
+      top: -120px; right: 80px;
+      width: 480px; height: 480px; border-radius: 50%;
+      background: rgba(255,255,255,0.05);
+      pointer-events: none;
+    }
+    #banner::after {
+      content: ''; position: absolute;
+      bottom: -140px; left: -60px;
+      width: 380px; height: 380px; border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+      pointer-events: none;
+    }
+
+    #banner .bio { flex: 1; min-width: 0; position: relative; z-index: 1; }
+
+    #banner .bio .welcome-label {
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.16em;
+      text-transform: uppercase; color: rgba(255,220,180,0.9);
+      margin-bottom: 0.8rem; font-style: italic;
+    }
+    /* CHANGE: your name inside <span> */
+    #banner .bio h2 {
+      font-size: 3rem; color: var(--white);
+      font-weight: 300; margin-bottom: 0.65rem;
+    }
+    #banner .bio h2 span { font-weight: 600; }
+
+    /* Skill chips — frosted glass on orange bg */
+    #banner .bio .chips { display: flex; flex-wrap: wrap; gap: 0.55rem; margin-bottom: 1.85rem; }
+    .chip {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.32rem 0.9rem; border-radius: 50px;
+      background: rgba(255,255,255,0.14);
+      border: 1.5px solid rgba(255,255,255,0.35);
+      font-size: 0.8rem; font-weight: 600; color: var(--white);
+      backdrop-filter: blur(6px);
+    }
+    .chip i { font-size: 0.75rem; opacity: 0.85; }
+
+    #banner .bio p {
+      font-size: 1.02rem; color: rgba(255,255,255,0.92);
+      max-width: 50ch; margin-bottom: 2.2rem; line-height: 1.85;
+    }
+    .banner-actions { display: flex; gap: 0.9rem; flex-wrap: wrap; }
+
+    /* Circular profile photo */
+    /* CHANGE: src to your photo, e.g. images/headshot.jpg */
+    #banner .photo-wrap { flex-shrink: 0; position: relative; z-index: 1; }
+    /* Outer decorative ring */
+    #banner .photo-wrap .photo-outer {
+      width: 296px; height: 296px; border-radius: 50%;
+      border: 2px solid rgba(255,220,170,0.35);
+      display: flex; align-items: center; justify-content: center;
+      padding: 8px;
+    }
+    #banner .photo-wrap .photo-ring {
+      width: 100%; height: 100%; border-radius: 50%;
+      border: 3px solid rgba(255,220,170,0.55);
+      background: rgba(255,255,255,0.12);
+      overflow: hidden;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.25), inset 0 0 0 2px rgba(255,220,170,0.2);
+    }
+    #banner .photo-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center top; display: block;
+    }
+
+    /* ================================================================
+       ABOUT — warm cream bg
+    ================================================================ */
+    #about { background: var(--cream); }
+
+    #about .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; align-items: start;
+    }
+    #about .about-text p {
+      font-size: 0.97rem; color: var(--ink-mid);
+      margin-bottom: 1.1rem; line-height: 1.85;
+    }
+
+    /* Skill tags — CHANGE: update to your actual skills */
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.75rem; }
+    .skill-tag {
+      padding: 0.32rem 0.9rem; border-radius: 50px;
+      background: var(--white); color: var(--amber);
+      font-size: 0.78rem; font-weight: 700;
+      border: 1.5px solid var(--peach-dark);
+      letter-spacing: 0.01em;
+    }
+
+    /* Stats — CHANGE: numbers to your own experience */
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
+    .stat-card {
+      background: var(--white);
+      border: 1.5px solid var(--peach);
+      border-radius: var(--radius);
+      padding: 1.65rem 1.25rem; text-align: center;
+      box-shadow: 0 2px 12px rgba(140,51,0,0.06);
+      position: relative; overflow: hidden;
+    }
+    .stat-card::before {
+      content: ''; position: absolute;
+      top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--hero-start), var(--peach-dark));
+    }
+    .stat-card .stat-number {
+      font-family: var(--font-serif); font-size: 2.4rem; font-weight: 600;
+      color: var(--amber); line-height: 1; margin-bottom: 0.4rem;
+    }
+    .stat-card .stat-label {
+      font-size: 0.74rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.09em; color: var(--ink-light);
+    }
+
+    /* ================================================================
+       PROJECTS — white bg
+       HOW TO ADD A PROJECT:
+       Copy one full <article class="card">…</article> block and paste
+       it after the last </article> inside .card-grid. Update the image
+       src, tag, title, description, tool chips, and href.
+    ================================================================ */
+    #projects { background: var(--white); }
+
+    #projects .card-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.65rem;
+    }
+
+    .card {
+      background: var(--white);
+      border: 1.5px solid var(--peach);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--card-shadow);
+      display: flex; flex-direction: column;
+      transition: transform 0.22s, box-shadow 0.22s;
+    }
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 36px rgba(140,51,0,0.13);
+    }
+
+    .card-img-wrap { position: relative; overflow: hidden; height: 190px; background: var(--cream); }
+    .card-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+    .card:hover .card-img-wrap img { transform: scale(1.05); }
+
+    .card-tag {
+      position: absolute; top: 12px; left: 12px;
+      background: var(--hero-start); color: var(--white);
+      font-size: 0.66rem; font-weight: 700;
+      letter-spacing: 0.07em; text-transform: uppercase;
+      padding: 3px 11px; border-radius: 50px;
+    }
+
+    .card-body { padding: 1.5rem 1.4rem 1.7rem; display: flex; flex-direction: column; flex: 1; }
+    .card-body h3 { font-size: 1rem; color: var(--ink); margin-bottom: 0.5rem; font-weight: 600; }
+    .card-body p { font-size: 0.87rem; color: var(--ink-light); flex: 1; margin-bottom: 1.15rem; line-height: 1.75; }
+
+    .card-tools { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.15rem; }
+    .tool-chip {
+      font-size: 0.68rem; font-weight: 700; color: var(--amber);
+      background: var(--cream); border-radius: 4px; padding: 2px 9px;
+      border: 1px solid var(--peach-dark);
+    }
+    .card-body .btn { align-self: flex-start; font-size: 0.8rem; padding: 0.45rem 1.1rem; }
+
+    /* ================================================================
+       CONTACT — warm cream bg
+       CHANGE: email address, LinkedIn URL, location
+    ================================================================ */
+    #contact { background: var(--cream); }
+
+    #contact .contact-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 2rem;
+    }
+    .contact-item { display: flex; align-items: flex-start; gap: 1rem; }
+    .contact-icon {
+      flex-shrink: 0; width: 46px; height: 46px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--hero-start), var(--hero-mid));
+      display: flex; align-items: center; justify-content: center;
+      color: var(--white); font-size: 0.95rem;
+      box-shadow: 0 4px 14px rgba(140,51,0,0.22);
+    }
+    .contact-item .info h4 {
+      font-family: var(--font-sans); font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.11em; text-transform: uppercase;
+      color: var(--ink-light); margin-bottom: 0.2rem;
+    }
+    .contact-item .info a,
+    .contact-item .info span { font-size: 0.95rem; color: var(--ink); }
+    .contact-item .info a:hover { color: var(--amber); }
+
+    /* ================================================================
+       FOOTER
+       CHANGE: your name in the copyright line
+    ================================================================ */
+    #footer {
+      padding: 1.75rem 3.5rem;
+      background: var(--sidebar-bg);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem; font-size: 0.79rem; color: #b08060;
+    }
+    #footer a { color: #b08060; }
+    #footer a:hover { color: var(--white); }
+    #footer .footer-social { display: flex; gap: 0.5rem; }
+    #footer .footer-social a {
+      display: flex; align-items: center; justify-content: center;
+      width: 30px; height: 30px; border-radius: 50%;
+      border: 1px solid rgba(196,80,26,0.25); color: #b08060; font-size: 0.74rem;
+      transition: background 0.2s, color 0.2s;
+    }
+    #footer .footer-social a:hover { background: var(--hero-start); border-color: var(--hero-start); color: var(--white); }
+
+    /* ================================================================
+       RESPONSIVE
+    ================================================================ */
+    @media (max-width: 960px) {
+      :root { --sidebar-w: 0px; }
+      body { margin-left: 0; }
+      #sidebar { transform: translateX(-100%); transition: transform 0.3s ease; width: 270px; }
+      #sidebar.open { transform: translateX(0); }
+      #menu-toggle { display: flex; }
+      #header { padding: 0 1.25rem; }
+      #banner { flex-direction: column-reverse; gap: 2.5rem; padding: 4rem 1.5rem; min-height: unset; text-align: center; }
+      #banner .bio p { max-width: 100%; }
+      #banner .bio .chips { justify-content: center; }
+      .banner-actions { justify-content: center; }
+      #banner .photo-wrap .photo-outer { width: 210px; height: 210px; }
+      section { padding: 3.75rem 1.5rem; }
+      #about .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      #projects .card-grid { grid-template-columns: 1fr 1fr; }
+      #footer { padding: 1.5rem; }
+    }
+    @media (max-width: 600px) {
+      #banner .bio h2 { font-size: 2.1rem; }
+      #projects .card-grid { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .section-title { font-size: 1.65rem; }
+    }
+
+    #sidebar-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.5); z-index: 150;
+    }
+    #sidebar-overlay.show { display: block; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .animate { animation: fadeUp 0.55s ease both; }
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.23s; }
+    .delay-3 { animation-delay: 0.36s; }
+  </style>
+</head>
+<body>
+
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+
+  <!-- SIDEBAR — CHANGE: name, title, social hrefs -->
+  <aside id="sidebar">
+    <div class="brand">
+      <h1>Kalah Kennebrew</h1>
+      <p>Data Analyst</p>
+    </div>
+    <hr />
+    <nav>
+      <ul>
+        <li><a href="#banner" class="active"><i class="fas fa-house"></i> Home</a></li>
+        <li><a href="#about"><i class="fas fa-user"></i> About</a></li>
+        <li><a href="#projects"><i class="fas fa-chart-bar"></i> Projects</a></li>
+        <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+      </ul>
+    </nav>
+    <div class="sidebar-social">
+      <p>Connect</p>
+      <div class="icons">
+        <a href="https://www.linkedin.com/in/kkennebrew" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        <!-- CHANGE href to your GitHub profile -->
+        <a href="https://github.com/kkennebrew" target="_blank" rel="noopener" aria-label="GitHub"><i class="fab fa-github"></i></a>
+        <a href="mailto:Kennebrewkalah@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- HEADER -->
+  <header id="header">
+    <button id="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="sidebar">
+      <i class="fas fa-bars"></i>
+    </button>
+    <!-- CHANGE: your name in the logo -->
+    <span class="logo">Kalah Kennebrew &mdash; <span>Portfolio</span></span>
+    <nav class="header-social" aria-label="Social links">
+      <a href="https://www.linkedin.com/in/kkennebrew" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+      <a href="https://github.com/kkennebrew" target="_blank" rel="noopener" aria-label="GitHub"><i class="fab fa-github"></i></a>
+      <a href="mailto:Kennebrewkalah@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
+    </nav>
+  </header>
+
+  <main id="main">
+
+    <!-- ============================================================
+         HERO
+         CHANGE: welcome label, name, chips, bio, button hrefs, photo src
+    ============================================================ -->
+    <section id="banner">
+      <div class="bio animate">
+        <p class="welcome-label">Welcome to my portfolio</p>
+
+        <!-- CHANGE: your name inside <span> -->
+        <h2>Hi, I&rsquo;m <span>Kalah Kennebrew</span></h2>
+
+        <!-- CHANGE: add or remove chips to match your tools -->
+        <div class="chips">
+          <span class="chip"><i class="fas fa-table"></i> Excel</span>
+          <span class="chip"><i class="fas fa-database"></i> SQL</span>
+          <span class="chip"><i class="fas fa-chart-pie"></i> Power BI</span>
+          <span class="chip"><i class="fab fa-python"></i> Python</span>
+        </div>
+
+        <!-- CHANGE: your own bio (3–4 sentences) -->
+        <p>
+          I&rsquo;m a data analyst based in Atlanta, GA with a focus on turning raw data into
+          decisions that actually get used. My toolkit spans Python (pandas, NumPy, Matplotlib),
+          SQL, and Power BI — from wrangling messy datasets to building dashboards that tell a
+          clear story at a glance. I&rsquo;m open to full-time roles, contract projects, and
+          collaborative work in healthcare, finance, and tech.
+        </p>
+
+        <div class="banner-actions">
+          <a href="#projects" class="btn btn-white"><i class="fas fa-list-ul"></i> View My Work</a>
+          <a href="#contact" class="btn btn-ghost"><i class="fas fa-paper-plane"></i> Get In Touch</a>
+        </div>
+      </div>
+
+      <!-- CHANGE: src to your photo path, e.g. images/headshot.jpg -->
+      <div class="photo-wrap animate delay-2">
+        <div class="photo-outer">
+          <div class="photo-ring">
+            <img src="images/headshot.jpg" alt="Photo of Kalah Kennebrew" width="280" height="280" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         ABOUT
+         CHANGE: paragraphs, skill tags, stat numbers
+    ============================================================ -->
+    <section id="about">
+      <span class="section-label">About Me</span>
+      <h2 class="section-title">Turning data into decisions</h2>
+      <div class="section-divider"></div>
+
+      <div class="about-grid">
+        <div class="about-text">
+          <!-- CHANGE: your own story in 2 paragraphs -->
+          <p>
+            I&rsquo;m a data analyst passionate about transforming complex datasets into clear,
+            compelling stories. With a foundation in statistical analysis and data visualisation,
+            I bridge the gap between raw numbers and strategic business decisions.
+          </p>
+          <p>
+            My workflow starts with asking the right questions, then reaching for the right tool
+            — whether that&rsquo;s a pivot table in Excel, a multi-join SQL query, or an
+            interactive Power BI dashboard — to surface the insights that move the needle.
+          </p>
+
+          <!-- CHANGE: update skill tags to match your actual skills -->
+          <div class="skill-tags">
+            <span class="skill-tag">Power BI</span>
+            <span class="skill-tag">SQL</span>
+            <span class="skill-tag">Python (Pandas)</span>
+            <span class="skill-tag">Excel / Pivot Tables</span>
+            <span class="skill-tag">Data Cleaning</span>
+            <span class="skill-tag">Dashboard Design</span>
+            <span class="skill-tag">Data Storytelling</span>
+            <span class="skill-tag">Statistical Analysis</span>
+          </div>
+        </div>
+
+        <!-- CHANGE: numbers to reflect your experience -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-number">1+</div>
+            <div class="stat-label">Years Experience</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">5+</div>
+            <div class="stat-label">Projects</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">4+</div>
+            <div class="stat-label">Tools Mastered</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" style="font-size:1rem;padding-top:0.55rem;line-height:1.4;">Open<br>to Work</div>
+            <div class="stat-label">Availability</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         PROJECTS
+         HOW TO ADD A PROJECT:
+         Copy one <article class="card">…</article> block and paste
+         it after the last </article>, still inside .card-grid.
+         Update: image src, card-tag text, title, description,
+         tool chips, and the href on "View Project".
+    ============================================================ -->
+    <section id="projects">
+      <span class="section-label">Projects</span>
+      <h2 class="section-title">Selected work</h2>
+      <div class="section-divider"></div>
+
+      <div class="card-grid">
+
+        <!-- PROJECT CARD 1 -->
+        <article class="card animate delay-1">
+          <div class="card-img-wrap">
+            <!-- CHANGE src, e.g. images/project1.png -->
+            <img src="images/placeholder-project.svg" alt="Sales Performance Dashboard" loading="lazy" />
+            <!-- CHANGE tag category -->
+            <span class="card-tag">Power BI</span>
+          </div>
+          <div class="card-body">
+            <!-- CHANGE title, description, chips, href -->
+            <h3>Sales Performance Dashboard</h3>
+            <p>Built an interactive Power BI dashboard tracking regional sales KPIs, churn, and forecast accuracy. Cut report generation from 4 hours to under 5 minutes.</p>
+            <div class="card-tools">
+              <span class="tool-chip">Power BI</span>
+              <span class="tool-chip">SQL</span>
+              <span class="tool-chip">Excel</span>
+            </div>
+            <!-- CHANGE href to your project link -->
+            <a href="#" class="btn btn-outline" target="_blank" rel="noopener">
+              <i class="fas fa-external-link-alt"></i> View Project
+            </a>
+          </div>
+        </article>
+
+        <!-- PROJECT CARD 2 -->
+        <article class="card animate delay-2">
+          <div class="card-img-wrap">
+            <img src="images/placeholder-project.svg" alt="Customer Segmentation Analysis" loading="lazy" />
+            <span class="card-tag">Python</span>
+          </div>
+          <div class="card-body">
+            <h3>Customer Segmentation Analysis</h3>
+            <p>Applied K-means clustering to segment 50K+ customers by purchasing behaviour. Informed a targeted campaign that lifted email open rates by 18%.</p>
+            <div class="card-tools">
+              <span class="tool-chip">Python</span>
+              <span class="tool-chip">pandas</span>
+              <span class="tool-chip">scikit-learn</span>
+            </div>
+            <a href="#" class="btn btn-outline" target="_blank" rel="noopener">
+              <i class="fas fa-external-link-alt"></i> View Project
+            </a>
+          </div>
+        </article>
+
+        <!-- PROJECT CARD 3 -->
+        <article class="card animate delay-3">
+          <div class="card-img-wrap">
+            <img src="images/placeholder-project.svg" alt="Retail Inventory SQL Pipeline" loading="lazy" />
+            <span class="card-tag">SQL</span>
+          </div>
+          <div class="card-body">
+            <h3>Retail Inventory SQL Pipeline</h3>
+            <p>Designed a multi-table SQL pipeline to automate weekly inventory reconciliation, cutting manual work by 70% and flagging stock anomalies in real time.</p>
+            <div class="card-tools">
+              <span class="tool-chip">SQL</span>
+              <span class="tool-chip">PostgreSQL</span>
+              <span class="tool-chip">Python</span>
+            </div>
+            <a href="#" class="btn btn-outline" target="_blank" rel="noopener">
+              <i class="fas fa-external-link-alt"></i> View Project
+            </a>
+          </div>
+        </article>
+
+        <!-- ADD MORE CARDS HERE -->
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         CONTACT
+         CHANGE: email, LinkedIn URL, location
+    ============================================================ -->
+    <section id="contact">
+      <span class="section-label">Contact</span>
+      <h2 class="section-title">Let&rsquo;s work together</h2>
+      <div class="section-divider"></div>
+
+      <div class="contact-grid">
+        <div class="contact-item">
+          <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+          <div class="info">
+            <h4>Email</h4>
+            <a href="mailto:Kennebrewkalah@gmail.com">Kennebrewkalah@gmail.com</a>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon"><i class="fab fa-linkedin-in"></i></div>
+          <div class="info">
+            <h4>LinkedIn</h4>
+            <a href="https://www.linkedin.com/in/kkennebrew" target="_blank" rel="noopener">linkedin.com/in/kkennebrew</a>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+          <div class="info">
+            <h4>Location</h4>
+            <span>Atlanta, GA</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- CHANGE: your name in the copyright -->
+  <footer id="footer">
+    <p>&copy; <span id="copy-year"></span> Kalah Kennebrew. All rights reserved.</p>
+    <nav class="footer-social">
+      <a href="https://www.linkedin.com/in/kkennebrew" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+      <a href="https://github.com/kkennebrew" target="_blank" rel="noopener" aria-label="GitHub"><i class="fab fa-github"></i></a>
+      <a href="mailto:Kennebrewkalah@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
+    </nav>
+  </footer>
+
+  <!-- Placeholder project images (removed once you add real screenshots) -->
+  <script>
+    document.getElementById('copy-year').textContent = new Date().getFullYear();
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 190">
+      <rect width="400" height="190" fill="#fff8f2"/>
+      <rect x="80"  y="115" width="28" height="45" rx="4" fill="#ffd4a8"/>
+      <rect x="128" y="85"  width="28" height="75" rx="4" fill="#f0a070"/>
+      <rect x="176" y="58"  width="28" height="102" rx="4" fill="#c4501a" opacity="0.75"/>
+      <rect x="224" y="72"  width="28" height="88"  rx="4" fill="#f0a070"/>
+      <rect x="272" y="95"  width="28" height="65"  rx="4" fill="#ffd4a8"/>
+      <text x="200" y="27" text-anchor="middle" font-family="sans-serif"
+            font-size="11" fill="#8c3300">Add your project screenshot</text>
+    </svg>`;
+    const url = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml' }));
+    document.querySelectorAll('img').forEach(img => {
+      if (img.src.includes('placeholder-project')) img.src = url;
+    });
+  </script>
+
+  <!-- Mobile sidebar + scroll-spy nav -->
+  <script>
+    (function () {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebar-overlay');
+      const toggle  = document.getElementById('menu-toggle');
+      const open  = () => { sidebar.classList.add('open'); overlay.classList.add('show'); toggle.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden'; };
+      const close = () => { sidebar.classList.remove('open'); overlay.classList.remove('show'); toggle.setAttribute('aria-expanded','false'); document.body.style.overflow=''; };
+      toggle.addEventListener('click', () => sidebar.classList.contains('open') ? close() : open());
+      overlay.addEventListener('click', close);
+      sidebar.querySelectorAll('nav a').forEach(l => l.addEventListener('click', () => { if (window.innerWidth <= 960) close(); }));
+
+      const navLinks = document.querySelectorAll('#sidebar nav a');
+      document.querySelectorAll('section[id]').forEach(s =>
+        new IntersectionObserver(entries => {
+          entries.forEach(e => {
+            if (e.isIntersecting) {
+              navLinks.forEach(l => l.classList.remove('active'));
+              const a = document.querySelector(`#sidebar nav a[href="#${e.target.id}"]`);
+              if (a) a.classList.add('active');
+            }
+          });
+        }, { threshold: 0.35 }).observe(s)
+      );
+    })();
+  </script>
+
+</body>
+</html>
