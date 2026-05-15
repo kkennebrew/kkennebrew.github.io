@@ -385,24 +385,22 @@
       position: relative;
     }
 
-    #banner .photo-wrap .photo-ring {
-      width: 240px; height: 240px;
-      border-radius: 50%;
-      border: 5px solid var(--accent);
-      padding: 5px;
-      background: #ffffff;
-      box-shadow: 0 8px 32px rgba(94,129,172,0.22);
-      overflow: hidden;
-    }
+#banner .photo-wrap .photo-ring {
+  width: 260px; height: 260px;
+  border-radius: 50%;
+  border: 8px solid #e2e8f0;
+  background: #e2e8f0;
+  overflow: hidden;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.10);
+}
 
-    #banner .photo-wrap img {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      object-fit: cover;
-      display: block;
-    }
-
+#banner .photo-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
     /* Decorative dot behind the photo */
     #banner .photo-wrap::before {
       content: '';
